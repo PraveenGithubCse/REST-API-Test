@@ -58,39 +58,6 @@ public class SalesConsumerTest {
 				.then().statusCode(200).body("id", equalTo(2)).log().all();
 	}
 
-//	// Consumer test with mock provider
-//	@Pact(consumer = "userconsumer", provider = "userprovider")
-//	public V4Pact createGetFragment(PactDslWithProvider builder) {
-//		// setting headers
-//		headers.put("Content-Type", "application.json");
-//		// create json body
-////		DslPart resBody = ((PactDslJsonBody) PactDslJsonArray.arrayMinLike(1)
-////			    .integerType("id", 2)
-////			    .nullValue("cash").nullValue("cashier")
-////				.nullValue("product").stringType("registeredAt")
-////			    .object("cash")
-////			        .integerType("id", 99)
-////			        .integerType("floor", 50)
-////			    .closeObject()
-////			    .object("cashier")
-////			        .integerType("id", 99)
-////			        .stringType("surname_name", "Bella")
-////			    .closeObject()
-////			    .object("product")
-////			        .integerType("id", 99)
-////			        .stringType("name", "Chocolate")
-////			        .integerType("price", 78)
-////			    .closeObject()
-////			).stringType("registeredAt", "2025-07-03");
-//		DslPart resBody = PactDslJsonArray.arrayMinLike(1).integerType("id",2).nullValue("cash").nullValue("cashier")
-//				.nullValue("product").stringType("registeredAt");
-//		
-//		// Create the contract(Pact)
-//		return builder.given("Request 2 - GET ALL").uponReceiving("A request to get cashiers").method("GET")
-//				.path("/api/sales").headers(headers).willRespondWith().status(200).body(resBody)
-//				.toPact(V4Pact.class);
-//	}
-//
 
 	@Pact(consumer = "userconsumer", provider = "userprovider")
 	public V4Pact createGetFragment(PactDslWithProvider builder) {
