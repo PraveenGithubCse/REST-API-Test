@@ -1,0 +1,7 @@
+Cashier
+
+GET       /cashiers
+POST      /cashiers
+GET       /cashiers/{id}
+PUT       /cashiers/{id}
+DELETE    /cashiers/{id}

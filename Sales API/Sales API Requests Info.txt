@@ -1,0 +1,7 @@
+Sale
+
+GET       /sales 
+POST      /sales
+GET	  /sales/{id}
+PUT       /sales/{id}
+DELETE    /sales/{id}
