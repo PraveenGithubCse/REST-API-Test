@@ -1,4 +1,4 @@
-package Products;
+package Spring_Rest_Api;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -15,8 +15,10 @@ import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
 import au.com.dius.pact.consumer.junit5.PactTestFor;
 import au.com.dius.pact.core.model.V4Pact;
 import au.com.dius.pact.core.model.annotations.Pact;
+
+//Extend with Pact JUnit5 extension for contract testing
 @ExtendWith(PactConsumerTestExt.class)
-public class ProductConsumerTest {
+public class productConsumerTest {
 	// Set the headers
     Map<String, String> headers = new HashMap<>();
     int key;
@@ -25,12 +27,12 @@ public class ProductConsumerTest {
     public V4Pact createPostFragment(PactDslWithProvider builder) {
         // Set headers
         headers.put("Content-Type", "application/json");
-        // Create the JSON body
+        // Define the expected request/response JSON body
         DslPart reqResBody = new PactDslJsonBody()
         		.integerType("id",3)
                 .stringType("name", "phone")
                 .integerType("price",18000);
-        // Create the contract(Pact)
+        // Create the pact fragment
         return builder.given("Request 1 - POST").
         		uponReceiving("A request to create a products").
         		method("POST")
@@ -67,16 +69,15 @@ public class ProductConsumerTest {
     public V4Pact createPutFragment(PactDslWithProvider builder) {
         // Set headers
         headers.put("Content-Type", "application/json");
-        // Create the JSON body
+        // Define the expected request/response JSON body
         DslPart reqResBody = new PactDslJsonBody()
         		.integerType("id",1)
                 .stringType("name", "Tab")
                 .integerType("price",42000);
-        // Create the contract(Pact)
+            //  Create the pact fragment
         return builder.given("Request 2 - PUT")
 				.uponReceiving("A request to modify a product")
 				.method("PUT")
-//                	.path("/api/cashiers")
 				.headers(headers)
 				.body(reqResBody)
 				.pathFromProviderState("/api/products/${id}", "/api/products/1")
@@ -113,7 +114,7 @@ public class ProductConsumerTest {
  		public V4Pact createGetFragment(PactDslWithProvider builder) {
  			// setting headers
  			headers.put("Content-Type", "application/json");
- 			// create json body
+ 			// Define the expected request/response JSON body
  			DslPart resBody = PactDslJsonArray.arrayMinLike(1)
  					.integerType("id", 1)
  					.stringType("name","phone")
@@ -121,7 +122,7 @@ public class ProductConsumerTest {
  					.integerType("id", 2)
  					.stringType("name", "Tablet")
                     .integerType("price",42000);
- 			// Create the contract(Pact)
+ 			// Create the pact fragment
  			return builder.given("Request 3 - GET ALL")
  					.uponReceiving("A request to get all products")
  					.method("GET")
@@ -152,16 +153,15 @@ public class ProductConsumerTest {
     public V4Pact createGetByIdFragment(PactDslWithProvider builder) {
         // Set headers
         headers.put("Content-Type", "application/json");
-        // Create the JSON body
+        // Define the expected request/response JSON body
         DslPart reqResBody = new PactDslJsonBody()
         		.integerType("id",1)
                 .stringType("name", "phone")
                 .integerType("price",18000);
-        // Create the contract(Pact)
+        // Create the pact fragment
         return builder.given("Request 4 - GET BY ID")
         		.uponReceiving("A request to get a product")
         		.method("GET")
-//            	.path("/api/cashiers")
 			    .headers(headers)
 			    .pathFromProviderState("/api/products/${id}", "/api/products/1")
 			    .willRespondWith()
@@ -172,9 +172,7 @@ public class ProductConsumerTest {
     @Test
     @PactTestFor(providerName = "userprovider", pactMethod = "createGetByIdFragment")
     public void getByIdRequestTest(MockServer mockServer) {
-        // Send request, get response, assert response
-    	
-        // Send request, get response, assert response
+       // Send request, get response, assert response
         given().
         	baseUri(mockServer.getUrl()+ "/api/products")
         	.headers(headers)
@@ -191,12 +189,14 @@ public class ProductConsumerTest {
  	public V4Pact createDeleteByIdFragment(PactDslWithProvider builder) {
  		// Set headers
  		headers.put("Content-Type", "application/json");
-
- 		// Create the contract(Pact)
- 		return builder.given("Request 5 - DELETE BY ID").uponReceiving("A request to delete a product").method("DELETE")
-//                 	.path("/api/cashiers")
- 				.headers(headers).pathFromProviderState("/api/products/${id}", "/api/products/2").willRespondWith()
- 				.status(200).toPact(V4Pact.class);
+ 		// Define the expected request/response JSON body
+ 		return builder.given("Request 5 - DELETE BY ID")
+ 				      .uponReceiving("A request to delete a product")
+ 				      .method("DELETE")
+ 				      .headers(headers)
+ 				      .pathFromProviderState("/api/products/${id}", "/api/products/2")
+ 				      .willRespondWith() .status(200)
+ 				      .toPact(V4Pact.class);
  	}
 
  	// Consumer test with mock provider
@@ -205,7 +205,12 @@ public class ProductConsumerTest {
  	public void deleteByIdRequestTest(MockServer mockServer) {
 
  		// Send request, get response, assert response
- 		given().baseUri(mockServer.getUrl() + "/api/products").headers(headers).log().all().when().delete("/2").then()
- 				.statusCode(200).log().all();
+ 		given().baseUri(mockServer.getUrl() + "/api/products")
+ 		       .headers(headers)
+ 		       .log().all()
+ 		       .when().delete("/2")
+ 		       .then()
+ 				.statusCode(200)
+ 				.log().all();
  	}
 }

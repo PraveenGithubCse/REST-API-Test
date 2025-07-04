@@ -1,4 +1,4 @@
-package Products;
+package Spring_Rest_Api;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +17,7 @@ import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 
 @Provider("userprovider")
 @PactFolder("target/pacts")
-public class ProductProviderTest {
+public class productProviderTest {
 	@BeforeEach
     public void setUp(PactVerificationContext context) {
         HttpTestTarget target = new HttpTestTarget("localhost", 8181);
@@ -58,4 +58,3 @@ public class ProductProviderTest {
 		return data;
 	}
 }
-
